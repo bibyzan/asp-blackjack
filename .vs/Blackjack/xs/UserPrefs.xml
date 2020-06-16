@@ -1,0 +1,44 @@
+﻿<Properties StartupConfiguration="{E5231E00-D93C-4F34-8B9E-4BE794DCB7C6}|Default">
+  <MonoDevelop.Ide.ItemProperties.Blackjack PreferredExecutionTarget="/Applications/Safari.app" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Pages/Players/Index.cshtml">
+    <Files>
+      <File FileName="Pages/Index.cshtml" Line="119" Column="40" IsPinned="True" />
+      <File FileName="Pages/Players/Create.cshtml" Line="25" Column="43" />
+      <File FileName="Pages/Players/Create.cshtml.cs" Line="41" Column="46" />
+      <File FileName="wwwroot/js/site.js" Line="182" Column="22" />
+      <File FileName="Pages/Players/Index.cshtml" Line="32" Column="62" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Blackjack" expanded="True">
+            <Node name="Blackjack" expanded="True">
+              <Node name="Data" expanded="True" />
+              <Node name="Models" expanded="True" />
+              <Node name="Pages" expanded="True">
+                <Node name="Players" expanded="True">
+                  <Node name="Create.cshtml" expanded="True" />
+                  <Node name="Index.cshtml" expanded="True">
+                    <Node name="Index.cshtml.cs" selected="True" />
+                  </Node>
+                </Node>
+                <Node name="Shared" expanded="True" />
+                <Node name="Index.cshtml" expanded="True" />
+              </Node>
+              <Node name="wwwroot" expanded="True">
+                <Node name="images" expanded="True" />
+                <Node name="js" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

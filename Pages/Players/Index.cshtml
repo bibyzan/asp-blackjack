@@ -1,0 +1,44 @@
+@page
+@model Blackjack.Pages.Players.IndexModel
+@{
+    ViewData["Title"] = "Players";
+}
+<h4>High Scores</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Player[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Player[0].Score)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Player[0].Wins)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Player[0].Losses)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Player.OrderBy(m => m.Score).Reverse())
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Score)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Wins)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Losses)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

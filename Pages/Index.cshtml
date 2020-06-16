@@ -1,0 +1,146 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<h1>Black Jack!</h1>
+
+<div id="input-content" class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label class="control-label">Name: </label>
+            <input id="player-name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <input id="start-game" type="submit" value="Start Game" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+<div id="game-content"/>
+
+<script>
+    let blackjack;
+
+    const handHtml = (cards = []) => {
+        let cardsHtml = '';
+        for (let card of cards) {
+            cardsHtml += `<img src="http://localhost:5000/images/cards/${card.toString()}" width="50" height="70"/>\n`;
+        }
+        return cardsHtml;
+    }
+
+    const updateHtml = () => {
+        const flexCol = 'style="display: flex; flex-direction: column;flex: 1;"';
+        const cardContainerStyle = 'style="display: flex; flex-direction: row;flex: 1;"';
+
+        const dealerCardsHtml = handHtml(blackjack.dealer.cards);
+        const playerCardsHtml = handHtml(blackjack.playerHand.cards);
+
+        let betHtml = '';
+        if (blackjack.bet > 0) {
+            betHtml = `<h5>bet: ${blackjack.bet}</h5>`;
+        }
+
+        $('#game-content')[0].innerHTML = `
+            <h4>
+                ${blackjack.player.chips} chips
+            </h4>
+            ${betHtml}
+            <div style="display: flex; flex-direction: row; width: 80%;">
+                <div ${flexCol}>
+                    <h6>Dealer: ${blackjack.dealer.score}</h6>
+                    <div ${cardContainerStyle}>${dealerCardsHtml}</div>
+                </div>
+                <div ${flexCol}>
+                    <h6>${blackjack.player.name}: ${blackjack.playerHand.score}</h6>
+                    <div ${cardContainerStyle}>${playerCardsHtml}</div>
+                </div>
+            </div>
+            
+        `;
+    }
+
+    const setStartGame = (showSave = false) => {
+        if (!showSave) {
+            const name = $('#player-name')[0].value;
+            blackjack.player.name = name;
+        }
+        blackjack.start();
+        $('#input-content')[0].innerHTML = `
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Bet: </label>
+                        <input id="player-bet" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input id="start-bet" type="submit" value="Bet" class="btn btn-primary" />
+                        ${showSave ? '<input id="highscore" type="submit" value="Save Highscore" class="btn btn-secondary" />' : ''}
+                    </div>
+                </div>
+            `;
+        if (showSave) {
+            $('#highscore')[0].addEventListener('click', () => {
+                sessionStorage.setItem('wins', blackjack.player.wins);
+                sessionStorage.setItem('name', blackjack.player.name);
+                sessionStorage.setItem('losses', blackjack.player.losses);
+                sessionStorage.setItem('score', blackjack.player.chips);
+                window.location.assign('Players/Create');
+            });
+        }
+        $('#start-bet')[0].addEventListener('click', () => {
+            const bet = parseFloat($('#player-bet')[0].value);
+            console.log(bet);
+            if (bet === 'NaN') {
+                alert('Enter a valid number');
+                return;
+            } else if (bet > blackjack.player.chips) {
+                alert('You are missing enough chips');
+                return;
+            }
+            blackjack.betChips(bet);
+            blackjack.turn();
+            $('#input-content')[0].innerHTML = `
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input id="hit" type="submit" value="Hit" class="btn btn-primary" />
+                        <input id="stay" type="submit" value="Stay" class="btn btn-secondary" />
+                    </div>
+                </div>
+                `;
+            const checkGameFinish = () => {
+                if (blackjack.isGameOver()) {
+                    if (blackjack.checkPlayerWin()) {
+                        blackjack.player.wins++;
+                    } else {
+                        blackjack.player.losses++;
+                    }
+                    alert(blackjack.result(blackjack.check()));
+                    setStartGame(true);
+                }
+            };
+            $('#hit')[0].addEventListener('click', () => {
+                blackjack.turn();
+                updateHtml();
+                checkGameFinish();
+            });
+            $('#stay')[0].addEventListener('click', () => {
+                blackjack.turn(false);
+                updateHtml();
+                checkGameFinish();
+            });
+            updateHtml();
+        })
+        updateHtml();
+    }
+
+    window.addEventListener('load', function () {
+        blackjack = new window.Blackjack();
+
+        console.log(blackjack);
+        console.log($('#player-name'));
+        $('#start-game')[0].addEventListener('click', () => {
+            setStartGame();
+        });
+    });
+</script>
