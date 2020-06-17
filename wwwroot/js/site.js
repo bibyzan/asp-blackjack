@@ -28,15 +28,16 @@ class Card {
         return v[this.val - 1] + s[this.suit - 1] + '.gif';
     }
 
-    calcVal() {
+    calcVal(score) {
         //check for aces
         if (this.val > 10) {
             return 10;
-        }
-        else if (this.val == 1) {
+        } else if (this.val === 1) {
+            if (score + 11 > 21) {
+                return 1;
+            }
             return 11;
-        }
-        else {
+        } else {
             return this.val;
         }
     }
@@ -67,18 +68,11 @@ class Hand {
     constructor() {
         this.cards = [];
         this.score = 0;
-        this.isAce = false;
     }
 
     addCard(draw) {
-        this.score += draw.calcVal();
+        this.score += draw.calcVal(this.score);
         this.cards.push(draw);
-        if (draw.calcVal() == 11) {
-            this.isAce = true;
-        }
-        if (this.score > 21 && this.isAce) {
-            this.score -= 10;
-        }
     }
 
     toString() {
@@ -92,7 +86,6 @@ class Hand {
     }
 
     reset() {
-        this.isAce = false;
         this.score = 0;
         this.cards = [];
     }
@@ -145,7 +138,7 @@ class Blackjack {
     }
 
     dealerCheck() {
-        return this.dealer.score <= this.playerHand.score;
+        return (this.dealer.score <= this.playerHand.score && this.playerHand.score < 21) || this.dealer.cards.length < 2;
     }
 
     check() {

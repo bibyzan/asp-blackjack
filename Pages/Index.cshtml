@@ -66,7 +66,6 @@
             const name = $('#player-name')[0].value;
             blackjack.player.name = name;
         }
-        blackjack.start();
         $('#input-content')[0].innerHTML = `
                 <div class="col-md-4">
                     <div class="form-group">
@@ -89,9 +88,10 @@
             });
         }
         $('#start-bet')[0].addEventListener('click', () => {
+            blackjack.start();
             const bet = parseFloat($('#player-bet')[0].value);
             console.log(bet);
-            if (bet === 'NaN') {
+            if (!bet) {
                 alert('Enter a valid number');
                 return;
             } else if (bet > blackjack.player.chips) {
@@ -99,6 +99,7 @@
                 return;
             }
             blackjack.betChips(bet);
+            blackjack.turn();
             blackjack.turn();
             $('#input-content')[0].innerHTML = `
                 <div class="col-md-4">
